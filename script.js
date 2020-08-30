@@ -1,36 +1,24 @@
-const colors=["#FF9AA2","#FFB7B2","#FFDAC1","#E2F0CB","#B5EAD7","#C7CEEA"]
-const list_words = [
-    {
-        word: 'Duong',
-        meaning: 'Math'
-    },
-    {
-        word: 'Tan',
-        meaning: 'Physics'
-    },
-    {
-        word: 'Lam',
-        meaning: 'Chemistry'
-    },
-    {
-        word: 'Duy',
-        meaning: 'Math'
-    },
-    {
-        word: 'Trinh',
-        meaning: 'Chemistry'
-    }
-];
-const nextBtn = document.querySelector('#nextBtn');
-const bodyBcg = document.querySelector('body');
-const meaning = document.querySelector('#meaning');
-const word = document.querySelector('#word');
+const btns = document.querySelectorAll('.btn');
+const screen = document.querySelector('.screen');
+const equalBtn = document.querySelector('.btn-equal');
+const clearBtn = document.querySelector('.btn-clear');
 
-nextBtn.addEventListener('click',displayWord);
-function displayWord() {
-    let number = Math.floor(Math.random()*list_words.length);
-    meaning.innerHTML=list_words[number].word;
-    word.innerHTML = list_words[number].meaning;
-    let index = number%(colors.length);
-    bodyBcg.style.backgroundColor = colors[index];
+
+for(let i=0;i<btns.length;++i){
+    btns[i].addEventListener('click',function(){
+        let number = btns[i].getAttribute('data-num');
+        screen.value +=number
+    })
 }
+equalBtn.addEventListener('click',function(){
+    if(screen.value==''){
+        alert("Input is empty")
+    }else{
+    let value = eval(screen.value);
+    screen.value = value;
+    }
+})
+clearBtn.addEventListener('click',function(){
+    screen.value='';
+})
+
