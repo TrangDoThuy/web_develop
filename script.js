@@ -1,36 +1,37 @@
-const colors=["#FF9AA2","#FFB7B2","#FFDAC1","#E2F0CB","#B5EAD7","#C7CEEA"]
-const list_words = [
-    {
-        word: 'Duong',
-        meaning: 'Math'
-    },
-    {
-        word: 'Tan',
-        meaning: 'Physics'
-    },
-    {
-        word: 'Lam',
-        meaning: 'Chemistry'
-    },
-    {
-        word: 'Duy',
-        meaning: 'Math'
-    },
-    {
-        word: 'Trinh',
-        meaning: 'Chemistry'
-    }
-];
-const nextBtn = document.querySelector('#nextBtn');
-const bodyBcg = document.querySelector('body');
-const meaning = document.querySelector('#meaning');
-const word = document.querySelector('#word');
+function showTime(){
+    let date = new Date();
+    let hours = date.getHours();//0-23
+    let minutes = date.getMinutes();//0-59
+    let seconds = date.getSeconds();//0-59
 
-nextBtn.addEventListener('click',displayWord);
-function displayWord() {
-    let number = Math.floor(Math.random()*list_words.length);
-    meaning.innerHTML=list_words[number].word;
-    word.innerHTML = list_words[number].meaning;
-    let index = number%(colors.length);
-    bodyBcg.style.backgroundColor = colors[index];
+    let formatHours = convertFormat(hours)
+    hours = checkTime(hours)
+    hours = addZero(hours)
+    minutes = addZero(minutes)
+    seconds = addZero(seconds)
+    document.getElementById('clock').innerHTML=`${hours} : ${minutes} : ${seconds} : ${formatHours}`
 }
+function convertFormat(time){
+    let format ='AM'
+    if(time>=12){
+        format = 'PM'
+    }
+    return format;
+}
+function checkTime(time){
+    if(time>12){
+        time = time -12;
+    }
+    if(time===0){
+        time = 12; 
+    }
+    return time;
+}
+function addZero(time){
+    if(time<10){
+        time = "0"+time;
+    }
+    return time;
+}
+showTime();
+setInterval(showTime,1000)
