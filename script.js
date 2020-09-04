@@ -1,36 +1,51 @@
-const colors=["#FF9AA2","#FFB7B2","#FFDAC1","#E2F0CB","#B5EAD7","#C7CEEA"]
-const list_words = [
-    {
-        word: 'Duong',
-        meaning: 'Math'
-    },
-    {
-        word: 'Tan',
-        meaning: 'Physics'
-    },
-    {
-        word: 'Lam',
-        meaning: 'Chemistry'
-    },
-    {
-        word: 'Duy',
-        meaning: 'Math'
-    },
-    {
-        word: 'Trinh',
-        meaning: 'Chemistry'
+class Matrix {
+    constructor(width, height, element = (x, y) => undefined) {
+      this.width = width;
+      this.height = height;
+      this.content = [];
+  
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          this.content[y * width + x] = element(x, y);
+        }
+      }
     }
-];
-const nextBtn = document.querySelector('#nextBtn');
-const bodyBcg = document.querySelector('body');
-const meaning = document.querySelector('#meaning');
-const word = document.querySelector('#word');
+  
+    get(x, y) {
+      return this.content[y * this.width + x];
+    }
+    set(x, y, value) {
+      this.content[y * this.width + x] = value;
+    }
+  }
 
-nextBtn.addEventListener('click',displayWord);
-function displayWord() {
-    let number = Math.floor(Math.random()*list_words.length);
-    meaning.innerHTML=list_words[number].word;
-    word.innerHTML = list_words[number].meaning;
-    let index = number%(colors.length);
-    bodyBcg.style.backgroundColor = colors[index];
-}
+class MatrixIterator {
+    constructor(matrix) {
+      this.x = 0;
+      this.y = 0;
+      this.matrix = matrix;
+    }
+  
+    next() {
+      if (this.y == this.matrix.height) return {done: true};
+  
+      let value = {x: this.x,
+                   y: this.y,
+                   value: this.matrix.get(this.x, this.y)};
+      this.x++;
+      if (this.x == this.matrix.width) {
+        this.x = 0;
+        this.y++;
+      }
+      return {value, done: false};
+    }
+  }
+
+Matrix.prototype[Symbol.iterator] = function() {
+    return new MatrixIterator(this);
+  };
+
+let matrix = new Matrix(2, 2, (x, y) => `value ${x},${y}`);
+for (let {x, y, value} of matrix) {
+    console.log(x, y, value);
+  }
